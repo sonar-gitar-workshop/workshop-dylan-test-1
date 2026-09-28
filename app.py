@@ -62,7 +62,7 @@ def get_order(order_id):
 @app.get("/products/<sku>")
 def get_product(sku):
     if sku not in CATALOG:
-        return jsonify({})
+        return jsonify({"error": "Product not found"}), 404
     return jsonify(
         {"sku": sku, "name": PRODUCT_NAMES[sku], "price_cents": CATALOG[sku]}
     )
