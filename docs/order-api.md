@@ -7,6 +7,7 @@
 A successful response uses HTTP 201 and contains:
 
 - `id`: Internal order identifier.
+- `reference`: Customer-facing order reference, formatted as `ORDER-` followed by the order ID zero-padded to six digits (e.g. `ORDER-000001`).
 - `items`: Priced order line items.
 - `total_cents`: Total order price in cents.
 
