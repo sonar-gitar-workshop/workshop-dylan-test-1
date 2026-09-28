@@ -80,6 +80,35 @@ Gitar commits a fix to the branch. GitHub reruns CI against the new commit and w
 
 Verify the fix by reading the commit diff and confirming that CI passes.
 
+## Part 5: Functional validation
+
+Enable github issue features on the [setting page](/../../settings)
+
+Create a new issue as follows:
+```text
+Title: [Feature request] Create a delete order endpoint
+Description:
+Add the ability to delete an order with the following requirement:
+- Required order ID, SKU and quantity field
+- If no order ID is found, return a 500 error
+- If the order ID is found, but the SKU is not found, return a 500 error
+- If the quantity field exceeds the current quantity, return a JSON error
+- Once completed, return the order ID, SKU, remaining SKU quantity, and updated total
+```
+
+Open a new pull request with **base** `main` and **compare** `part-5-functional-validation` and make sure the newly created issue above is linked to the same pull request.
+
+To link an issue to a pull request in Github. Add this description in the pull request
+```text
+This pull request is created to implement this issue #<num>
+
+Closing this will resolve #<num>
+```
+
+The branch will try to implement the above feature. Gitar will check if the requirements are met with the new implementation.
+
+Verify the implementation.
+
 ## Troubleshooting
 
 **No review appears.** Confirm the repository is connected in Gitar and that you have a Gitar seat. You can comment `gitar review` to request a re-review.
