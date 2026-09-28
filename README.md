@@ -90,10 +90,10 @@ Title: [Feature request] Create a delete order endpoint
 Description:
 Add the ability to delete an order with the following requirement:
 - Required order ID, SKU and quantity field
-- If no order ID or SKU are found, return an 500 error
-- If the order ID is found, but SKU is not found, return an 500 error
+- If no order ID is found, return a 500 error
+- If the order ID is found, but the SKU is not found, return a 500 error
 - If the quantity field exceeds the current quantity, return a JSON error
-- Once completed, it will return the new quantity found in the same SKU and order
+- Once completed, return the order ID, SKU, remaining SKU quantity, and updated total
 ```
 
 Open a new pull request with **base** `main` and **compare** `part-5-functional-validation` and make sure the newly created issue above is linked to the same pull request.

@@ -22,7 +22,7 @@ ORDERS = {}
 
 def delete_order_item(order_id, sku, quantity):
     if order_id not in ORDERS:
-        return {"error": "Order not found"}, 404
+        return {"error": "Order not found"}, 500
 
     order = ORDERS[order_id]
     item_index = None
@@ -33,7 +33,7 @@ def delete_order_item(order_id, sku, quantity):
             break
 
     if item_index is None:
-        return {"error": "Product not found in order"}, 404
+        return {"error": "Product not found in order"}, 500
 
     item = order["items"][item_index]
     if quantity > item["quantity"]:
@@ -46,7 +46,12 @@ def delete_order_item(order_id, sku, quantity):
 
     order["total_cents"] -= item["unit_price_cents"] * quantity
 
-    return order, 200
+    return {
+        "order_id": order_id,
+        "sku": sku,
+        "quantity": item["quantity"],
+        "total_cents": order["total_cents"],
+    }, 200
 
 
 @app.post("/orders")
@@ -99,11 +104,16 @@ def get_product(sku):
 
 @app.delete("/orders/<order_id>/items/<sku>")
 def delete_order_item_endpoint(order_id, sku):
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Quantity is required"}), 400
     quantity = data.get("quantity")
 
     if quantity is None:
         return jsonify({"error": "Quantity is required"}), 400
+
+    if not isinstance(quantity, int) or isinstance(quantity, bool) or quantity <= 0:
+        return jsonify({"error": "Quantity must be a positive integer"}), 400
 
     result, status_code = delete_order_item(order_id, sku, quantity)
     return jsonify(result), status_code
